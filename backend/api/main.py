@@ -234,7 +234,7 @@ def load_model():
     device = torch.device(device_name)
 
     # Load checkpoint
-    ckpt = torch.load(CHECKPOINT_PATH, map_location=device, weights_only=False)
+    ckpt = torch.load(CHECKPOINT_PATH, map_location=device, weights_only=True)
     args = ckpt.get("args", {})
     vocab_size = ckpt.get("vocab_size", len(vocab))
 
@@ -261,7 +261,11 @@ def handle_classify_error(_request: Request, exc: ClassifyError) -> JSONResponse
 
 @app.exception_handler(Exception)
 def handle_unexpected_error(_request: Request, exc: Exception) -> JSONResponse:
-    return JSONResponse(status_code=500, content={"error": "server_error", "detail": str(exc)})
+    print(f"[error] unhandled exception: {exc!r}")
+    return JSONResponse(
+        status_code=500,
+        content={"error": "server_error", "detail": "An unexpected server error occurred."},
+    )
 
 
 @app.post("/classify")
