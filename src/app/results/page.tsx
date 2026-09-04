@@ -10,7 +10,7 @@ import {
   TRANSFER_TABLE,
 } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Results — Structure Over Surface" };
+export const metadata: Metadata = { title: "Results - Structure Over Surface" };
 
 export default function ResultsPage() {
   return (

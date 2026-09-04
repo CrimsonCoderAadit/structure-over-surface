@@ -9,7 +9,7 @@
   --text-dim: #9a9ca5;
   --text-faint: #63666f;
 
-  /* Edge-type legend — consistent everywhere on the site */
+  /* Edge-type legend colors, consistent everywhere on the site */
   --edge-structural: #4fd1c5; /* parent -> child */
   --edge-sibling: #f2b44d; /* sibling */
   --edge-flow: #e85d75; /* control-flow */

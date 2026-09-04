@@ -1,4 +1,4 @@
-// Exact figures from the project audit. Do not round or invent numbers here —
+// Exact figures from the project audit. Do not round or invent numbers here:
 // every value in this file should be traceable to a results file in the research repo.
 
 export const DATASET = {

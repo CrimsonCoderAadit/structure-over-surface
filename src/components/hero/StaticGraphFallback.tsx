@@ -1,7 +1,7 @@
 import { LAID_OUT, EDGES_RESOLVED } from "./graphData";
 
 // Static, non-animated projection of the same graph and layout used in the 3D
-// scene — shown when prefers-reduced-motion is set, WebGL is unavailable, or
+// scene. Shown when prefers-reduced-motion is set, WebGL is unavailable, or
 // the canvas hasn't mounted yet. Same data, same colors, no motion.
 export default function StaticGraphFallback() {
   const scale = 48;

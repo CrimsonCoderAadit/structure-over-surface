@@ -6,6 +6,7 @@ import GraphPanel from "@/components/demo/GraphViz";
 import ResultPanel from "@/components/demo/ResultPanel";
 import { CANONICAL_SNIPPET } from "@/lib/mockAst";
 import type { ClassifyResponse } from "@/app/api/classify/route";
+import AmbientBackground from "@/components/ambient/AmbientBackground";
 
 export default function DemoPage() {
   const [code, setCode] = useState(CANONICAL_SNIPPET);
@@ -34,12 +35,15 @@ export default function DemoPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-5 sm:px-8 py-20 sm:py-24">
-      <h1 className="font-display text-4xl sm:text-5xl">Demo</h1>
-      <p className="measure mt-6 text-text-dim leading-relaxed">
-        Paste or upload a Python function. The panel on the right shows the AST graph as
-        it&apos;s constructed, colored by edge type; the result below shows what the
-        classifier makes of it.
-      </p>
+      <div className="relative overflow-hidden">
+        <AmbientBackground variant="absolute" seed={5501} nodeCount={9} radius={3.5} rotationSpeed={0.03} />
+        <h1 className="font-display text-4xl sm:text-5xl">Demo</h1>
+        <p className="measure mt-6 text-text-dim leading-relaxed">
+          Paste or upload a Python function. The panel on the right shows the AST graph as
+          it&apos;s constructed, colored by edge type; the result below shows what the
+          classifier makes of it.
+        </p>
+      </div>
 
       <div className="mt-12 grid lg:grid-cols-2 gap-8">
         <CodeInput value={code} onChange={setCode} onSubmit={handleSubmit} loading={loading} />

@@ -1,9 +1,9 @@
 import type { ASTGraph, GraphEdge, GraphNode } from "./graphTypes";
 
-// A deliberately simple line-based heuristic parser — NOT a real Python AST.
+// A deliberately simple line-based heuristic parser, NOT a real Python AST.
 // It exists to produce a graph with the right shape (nesting, block structure,
 // three edge kinds) for visualization on the marketing site and the demo mock.
-// The real pipeline uses Python's `ast` module — see /methodology.
+// The real pipeline uses Python's `ast` module; see /methodology.
 
 const BLOCK_KEYWORDS: Record<string, string> = {
   def: "FunctionDef",

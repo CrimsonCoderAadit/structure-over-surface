@@ -5,7 +5,7 @@ export const EDGE_TYPES = {
     key: "structural",
     label: "Parent → Child",
     short: "Structural",
-    description: "Every AST parent-child relationship — the tree's spine.",
+    description: "Every AST parent-child relationship: the tree's spine.",
     color: "#4fd1c5",
   },
   sibling: {

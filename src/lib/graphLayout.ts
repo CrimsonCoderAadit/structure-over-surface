@@ -10,7 +10,7 @@ export interface LaidOutNode {
 
 // Deterministic spherical layout: depth maps to the polar angle (root at the
 // top pole, deepest nodes fan out toward the bottom), DFS leaf order maps to
-// the azimuthal angle. No physics simulation — same graph always lays out the
+// the azimuthal angle. No physics simulation: same graph always lays out the
 // same way, which matters when the whole point is "structure, not noise."
 export function layoutGraph(graph: ASTGraph, radius = 3.4): LaidOutNode[] {
   const childrenOf = new Map<string, string[]>();

@@ -8,7 +8,7 @@ import {
   STRUCTURAL_REWRITE_TABLE,
 } from "@/lib/content";
 
-export const metadata: Metadata = { title: "Findings — Structure Over Surface" };
+export const metadata: Metadata = { title: "Findings - Structure Over Surface" };
 
 function Finding({
   title,
@@ -45,7 +45,7 @@ export default function FindingsPage() {
         <h1 className="font-display text-4xl sm:text-5xl">Findings</h1>
         <p className="measure mt-6 text-text-dim leading-relaxed">
           Four things this project actually found, reported the way they came out of the
-          experiments — including the two that complicate the project&apos;s own thesis.
+          experiments, including the two that complicate the project&apos;s own thesis.
         </p>
       </Reveal>
 
@@ -54,7 +54,7 @@ export default function FindingsPage() {
           Human functions in this dataset carry docstrings far more often than
           machine-generated ones do. A model trained with docstrings present scores{" "}
           <span className="text-text font-mono">{DOCSTRING_CONFOUND.withDocstringsAccuracy.toFixed(4)}</span>{" "}
-          accuracy on a clean test set — but that number collapses by{" "}
+          accuracy on a clean test set, but that number collapses by{" "}
           <span className="text-text font-mono">{DOCSTRING_CONFOUND.droppedPointsAfterStrip}</span> points
           when docstrings are stripped only at inference time. Only{" "}
           <span className="text-text font-mono">
@@ -63,17 +63,17 @@ export default function FindingsPage() {
           predictions still match the clean run once that surface signal is gone.
         </p>
         <p>
-          The docstring-free model —{" "}
-          <span className="text-text font-mono">{DOCSTRING_CONFOUND.docstringFreeAccuracy.toFixed(4)}</span>{" "}
-          accuracy — is the honest headline number reported throughout this site, not the
+          The docstring-free model (
+          <span className="text-text font-mono">{DOCSTRING_CONFOUND.docstringFreeAccuracy.toFixed(4)}</span>
+          {" "}accuracy) is the honest headline number reported throughout this site, not the
           inflated 0.9301.
         </p>
       </Finding>
 
-      <Finding title="Token obfuscation does nothing — dead code does a lot" accent="#f2b44d">
+      <Finding title="Token obfuscation does nothing, dead code does a lot" accent="#f2b44d">
         <p>
           Variable renaming plus non-flow dead code leaves GNN accuracy completely
-          unchanged — exactly{" "}
+          unchanged: exactly{" "}
           <span className="text-text font-mono">{OBFUSCATION_TABLE[0].gnn.toFixed(4)}</span>{" "}
           across every obfuscation condition, because none of it touches graph structure.
           TF-IDF drops to{" "}
@@ -94,7 +94,7 @@ export default function FindingsPage() {
           </span>
           , from a clean{" "}
           <span className="text-text font-mono">{clean.balancedAccuracy.toFixed(4)}</span>. The
-          errors shift from balanced to strongly false-negative — injected dead code makes
+          errors shift from balanced to strongly false-negative: injected dead code makes
           machine code read as human to this model.
         </p>
       </Finding>
@@ -104,10 +104,10 @@ export default function FindingsPage() {
           GIN versus GraphSAGE, at matched parameter count:{" "}
           <span className="text-text font-mono">{ARCH_NULL_RESULTS.ginVsSage.gin.toFixed(4)}</span> vs{" "}
           <span className="text-text font-mono">{ARCH_NULL_RESULTS.ginVsSage.sage.toFixed(4)}</span>{" "}
-          balanced accuracy — a delta of{" "}
+          balanced accuracy, a delta of{" "}
           <span className="text-text font-mono">{ARCH_NULL_RESULTS.ginVsSage.delta.toFixed(4)}</span>, 95%
           CI [{ARCH_NULL_RESULTS.ginVsSage.ci[0]}, {ARCH_NULL_RESULTS.ginVsSage.ci[1]}], Wilcoxon{" "}
-          <span className="text-text font-mono">p = {ARCH_NULL_RESULTS.ginVsSage.p}</span>. Not a real win —
+          <span className="text-text font-mono">p = {ARCH_NULL_RESULTS.ginVsSage.p}</span>. Not a real win:
           GIN is kept for consistency, not because it demonstrably outperforms.
         </p>
         <p>
@@ -145,7 +145,7 @@ export default function FindingsPage() {
             {GRAPHCODEBERT_DEADCODE.graphCodeBert.cleanBalancedAccuracy.toFixed(4)} →{" "}
             {GRAPHCODEBERT_DEADCODE.graphCodeBert.balancedAccuracy.toFixed(4)}
           </span>
-          ) — its data-flow-aware pretraining gives it something like structural awareness
+          ): its data-flow-aware pretraining gives it something like structural awareness
           without needing an explicit graph.
         </p>
         <p className="text-text">

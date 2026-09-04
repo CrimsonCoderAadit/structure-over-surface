@@ -5,7 +5,7 @@ import { EDGE_TYPES } from "@/lib/edgeTypes";
 import type { EdgeTypeKey } from "@/lib/edgeTypes";
 
 // Five snippets of comparable length and nesting depth, so each graph in the
-// hero's rotation reads as the same kind of shape — just a different tree.
+// hero's rotation reads as the same kind of shape, just a different tree.
 // This is the site's single most important visual: it should always look like
 // a real, richly-branching structure, never a thin stick figure.
 const HERO_SNIPPETS = [
@@ -210,8 +210,8 @@ function buildHeroGraph(snippet: string): HeroGraphSet {
 
   const buildSeconds = laidOut.length * STAGGER;
   const buildHoldSeconds = buildSeconds + HOLD_SECONDS;
-  // Vanish mirrors the build: same stagger, same duration, reverse order —
-  // the last node to appear is the first to disappear.
+  // Vanish mirrors the build: same stagger, same duration, reverse order.
+  // The last node to appear is the first to disappear.
   const vanishSeconds = buildSeconds;
 
   return {
@@ -226,7 +226,7 @@ function buildHeroGraph(snippet: string): HeroGraphSet {
   };
 }
 
-// Precomputed once at module load — same deterministic layout every render,
+// Precomputed once at module load: same deterministic layout every render,
 // server and client, so there's no hydration mismatch.
 export const HERO_GRAPH_SETS: HeroGraphSet[] = HERO_SNIPPETS.map(buildHeroGraph);
 

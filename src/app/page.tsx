@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <div>
-      <section className="relative h-[92vh] min-h-[640px] w-full overflow-hidden border-b border-border-color">
+      <section className="relative h-[92vh] min-h-[640px] w-full overflow-hidden border-b border-border-color bg-bg">
         <div className="absolute inset-0">
           <Hero3D />
         </div>
@@ -17,14 +17,14 @@ export default function Home() {
 
         <div className="relative z-10 h-full mx-auto max-w-6xl px-5 sm:px-8 flex flex-col justify-end pb-20">
           <p className="font-mono text-xs text-text-dim mb-4 tracking-wide">
-            {DATASET.totalPairs} matched human / machine Python function pairs — GIN over AST graphs
+            {DATASET.totalPairs} matched human / machine Python function pairs: GIN over AST graphs
           </p>
           <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-7xl leading-[1.02] max-w-4xl text-text">
             Structure Over Surface
           </h1>
           <p className="measure mt-6 text-lg text-text-dim leading-relaxed">
             Detecting machine-generated Python code from the shape of its abstract syntax
-            tree — not its vocabulary, comments, or formatting. Every edge in the diagram
+            tree, not its vocabulary, comments, or formatting. Every edge in the diagram
             above is real: a graph assembling itself the same way the model sees code.
           </p>
 
@@ -61,7 +61,7 @@ export default function Home() {
           <Reveal delay={0.08}>
             <div className="font-mono text-4xl text-text">{gnn.accuracy.toFixed(4)}</div>
             <p className="mt-2 text-sm text-text-dim measure">
-              in-distribution accuracy, docstring-free, structure alone — no tokens, no
+              in-distribution accuracy, docstring-free, structure alone: no tokens, no
               identifiers, no comments.
             </p>
           </Reveal>
