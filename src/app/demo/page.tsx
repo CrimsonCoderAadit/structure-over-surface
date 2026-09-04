@@ -5,7 +5,7 @@ import CodeInput from "@/components/demo/CodeInput";
 import GraphPanel from "@/components/demo/GraphViz";
 import ResultPanel from "@/components/demo/ResultPanel";
 import { CANONICAL_SNIPPET } from "@/lib/mockAst";
-import type { ClassifyResponse } from "@/app/api/classify/route";
+import type { ClassifyResponse, ClassifyErrorResponse } from "@/app/api/classify/route";
 import AmbientBackground from "@/components/ambient/AmbientBackground";
 
 export default function DemoPage() {
@@ -13,17 +13,37 @@ export default function DemoPage() {
   const [result, setResult] = useState<ClassifyResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Specifically "the input isn't Python" — rendered under the code box,
+  // not as the graph panel's error state. Distinct from `error` above,
+  // which covers backend/network problems the graph panel should surface.
+  const [pythonError, setPythonError] = useState<string | null>(null);
+
+  const handleCodeChange = (value: string) => {
+    setCode(value);
+    setPythonError(null);
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
+    setPythonError(null);
     try {
       const res = await fetch("/api/classify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code }),
       });
-      if (!res.ok) throw new Error("Classification failed.");
+
+      if (!res.ok) {
+        const body: Partial<ClassifyErrorResponse> = await res.json().catch(() => ({}));
+        if (body.error === "invalid_python") {
+          setPythonError("This model only supports Python.");
+        } else {
+          setError(body.detail ?? "Something went wrong parsing that snippet. Try again.");
+        }
+        return;
+      }
+
       const data: ClassifyResponse = await res.json();
       setResult(data);
     } catch {
@@ -46,7 +66,13 @@ export default function DemoPage() {
       </div>
 
       <div className="mt-12 grid lg:grid-cols-2 gap-8">
-        <CodeInput value={code} onChange={setCode} onSubmit={handleSubmit} loading={loading} />
+        <CodeInput
+          value={code}
+          onChange={handleCodeChange}
+          onSubmit={handleSubmit}
+          loading={loading}
+          pythonError={pythonError}
+        />
 
         <div className="flex flex-col gap-6">
           <GraphPanel

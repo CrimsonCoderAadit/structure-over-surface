@@ -7,11 +7,13 @@ export default function CodeInput({
   onChange,
   onSubmit,
   loading,
+  pythonError,
 }: {
   value: string;
   onChange: (v: string) => void;
   onSubmit: () => void;
   loading: boolean;
+  pythonError?: string | null;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +57,8 @@ export default function CodeInput({
       >
         {loading ? "Parsing…" : "Classify"}
       </button>
+
+      {pythonError && <p className="mt-2 font-mono text-xs text-edge-flow">{pythonError}</p>}
     </div>
   );
 }
