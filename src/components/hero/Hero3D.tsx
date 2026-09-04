@@ -6,7 +6,7 @@ import StaticGraphFallback from "./StaticGraphFallback";
 
 const ASTGraphCanvas = dynamic(() => import("./ASTGraphCanvas"), {
   ssr: false,
-  loading: () => <StaticGraphFallback />,
+  loading: () => null,
 });
 
 function hasWebGL(): boolean {
@@ -30,7 +30,7 @@ export default function Hero3D() {
   }, []);
 
   if (mode === "pending") {
-    return <StaticGraphFallback />;
+    return null;
   }
 
   if (mode === "static") {
