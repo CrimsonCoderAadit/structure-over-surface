@@ -1,69 +1,101 @@
-import Image from "next/image";
+import Link from "next/link";
+import Hero3D from "@/components/hero/Hero3D";
+import EdgeLegend from "@/components/EdgeLegend";
+import Reveal from "@/components/Reveal";
+import { DATASET, GNN_ROC_AUC, IN_DISTRIBUTION_TABLE } from "@/lib/content";
 
 export default function Home() {
+  const gnn = IN_DISTRIBUTION_TABLE.find((r) => r.model.startsWith("GNN"))!;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div>
+      <section className="relative h-[92vh] min-h-[640px] w-full overflow-hidden border-b border-border-color">
+        <div className="absolute inset-0">
+          <Hero3D />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-bg/10 via-transparent to-bg pointer-events-none" />
+
+        <div className="relative z-10 h-full mx-auto max-w-6xl px-5 sm:px-8 flex flex-col justify-end pb-20">
+          <p className="font-mono text-xs text-text-dim mb-4 tracking-wide">
+            {DATASET.totalPairs} matched human / machine Python function pairs — GIN over AST graphs
           </p>
+          <h1 className="font-display text-[2.75rem] sm:text-6xl lg:text-7xl leading-[1.02] max-w-4xl text-text">
+            Structure Over Surface
+          </h1>
+          <p className="measure mt-6 text-lg text-text-dim leading-relaxed">
+            Detecting machine-generated Python code from the shape of its abstract syntax
+            tree — not its vocabulary, comments, or formatting. Every edge in the diagram
+            above is real: a graph assembling itself the same way the model sees code.
+          </p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <Link
+              href="/methodology"
+              className="font-mono text-sm border border-border-color px-4 py-2.5 hover:border-edge-structural hover:text-edge-structural transition-colors"
+            >
+              Read the methodology →
+            </Link>
+            <Link
+              href="/demo"
+              className="font-mono text-sm text-text-dim hover:text-text transition-colors"
+            >
+              Try the demo →
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 sm:px-8 py-24">
+        <Reveal>
+          <EdgeLegend className="mb-16" />
+        </Reveal>
+
+        <div className="grid sm:grid-cols-3 gap-10 sm:gap-8">
+          <Reveal delay={0}>
+            <div className="font-mono text-4xl text-text">{DATASET.totalPairs}</div>
+            <p className="mt-2 text-sm text-text-dim measure">
+              matched pairs, {DATASET.human} human-written and {DATASET.machine} generated by{" "}
+              {DATASET.generatorForTraining}.
+            </p>
+          </Reveal>
+          <Reveal delay={0.08}>
+            <div className="font-mono text-4xl text-text">{gnn.accuracy.toFixed(4)}</div>
+            <p className="mt-2 text-sm text-text-dim measure">
+              in-distribution accuracy, docstring-free, structure alone — no tokens, no
+              identifiers, no comments.
+            </p>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <div className="font-mono text-4xl text-text">
+              {GNN_ROC_AUC.mean.toFixed(4)}
+            </div>
+            <p className="mt-2 text-sm text-text-dim measure">
+              ROC-AUC, five-seed mean (± {GNN_ROC_AUC.sd.toFixed(4)}).
+            </p>
+          </Reveal>
         </div>
-      </main>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 sm:px-8 pb-28">
+        <Reveal>
+          <h2 className="font-display text-3xl sm:text-4xl max-w-2xl">
+            This site reports what worked, what didn&apos;t, and where a simpler baseline
+            beats the graph model outright.
+          </h2>
+          <p className="measure mt-5 text-text-dim leading-relaxed">
+            The findings section covers a docstring confound that was found and corrected,
+            two architectural choices that turned out not to matter, and a token-level
+            model that generalizes to structural adversarial edits better than this graph
+            model does. None of it is spun.
+          </p>
+          <Link
+            href="/findings"
+            className="inline-block mt-6 font-mono text-sm text-edge-flow hover:text-text transition-colors"
+          >
+            Read the findings →
+          </Link>
+        </Reveal>
+      </section>
     </div>
   );
 }
