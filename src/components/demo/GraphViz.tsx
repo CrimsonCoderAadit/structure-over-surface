@@ -752,7 +752,7 @@ function EmptyState({ height }: { height: number }) {
   );
 }
 
-function LoadingState({ height }: { height: number }) {
+function LoadingState({ height, slow }: { height: number; slow: boolean }) {
   return (
     <div
       className="flex flex-col items-center justify-center gap-4 select-none w-full h-full"
@@ -769,7 +769,11 @@ function LoadingState({ height }: { height: number }) {
           />
         ))}
       </div>
-      <p className="font-mono text-xs text-text-faint">Classifying…</p>
+      <p className="font-mono text-xs text-text-faint text-center max-w-[32ch] leading-relaxed">
+        {slow
+          ? "Waking up the model, this can take up to a minute if it's been idle…"
+          : "Classifying…"}
+      </p>
       <style>{`
         @keyframes graphPulse {
           0%, 80%, 100% { opacity: 0.25; transform: scale(1); }
@@ -854,6 +858,7 @@ function FullscreenOverlay({
   state,
   graph,
   error,
+  slowLoading,
   selectedNodeId,
   onSelectNode,
   onClose,
@@ -861,6 +866,7 @@ function FullscreenOverlay({
   state: PanelState;
   graph: ASTGraph | null;
   error: string | null;
+  slowLoading: boolean;
   selectedNodeId: string | null;
   onSelectNode: (id: string | null) => void;
   onClose: () => void;
@@ -949,7 +955,9 @@ function FullscreenOverlay({
               className="flex-1 min-w-0 h-full relative overflow-hidden"
             >
               {state === "empty" && <EmptyState height={dims.height} />}
-              {state === "loading" && <LoadingState height={dims.height} />}
+              {state === "loading" && (
+                <LoadingState height={dims.height} slow={slowLoading} />
+              )}
               {state === "error" && (
                 <ErrorState
                   message={error ?? "Classification failed. Try again."}
@@ -1015,9 +1023,21 @@ export default function GraphPanel({
 }) {
   const [expanded, setExpanded] = useState(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [slowLoading, setSlowLoading] = useState(false);
   const expandBtnRef = useRef<HTMLButtonElement>(null);
   const inlineContainerRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
+
+  // Cold-start hint: if classification hasn't returned within ~5s, assume the
+  // Render free-tier backend is spinning up from idle and say so.
+  useEffect(() => {
+    if (!loading) {
+      setSlowLoading(false);
+      return;
+    }
+    const timer = setTimeout(() => setSlowLoading(true), 5000);
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   // Dynamic dimensions of the inline container via ResizeObserver
   const inlineDims = useContainerDimensions(inlineContainerRef, height);
@@ -1078,7 +1098,7 @@ export default function GraphPanel({
         style={{ minHeight: height, height }}
       >
         {state === "empty" && <EmptyState height={height} />}
-        {state === "loading" && <LoadingState height={height} />}
+        {state === "loading" && <LoadingState height={height} slow={slowLoading} />}
         {state === "error" && (
           <ErrorState
             message={error ?? "Classification failed. Try again."}
@@ -1127,6 +1147,7 @@ export default function GraphPanel({
             state={state}
             graph={graph}
             error={error}
+            slowLoading={slowLoading}
             selectedNodeId={selectedNodeId}
             onSelectNode={setSelectedNodeId}
             onClose={handleCloseFullscreen}
